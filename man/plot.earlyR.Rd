@@ -5,7 +5,7 @@
 \alias{points.earlyR}
 \title{Plot earlyR objects}
 \usage{
-\method{plot}{earlyR}(x, type = c("R", "lambdas"), scale = 1, ...)
+\method{plot}{earlyR}(x, type = c("R", "lambdas"), scale = "ml", ...)
 
 \method{points}{earlyR}(x, scale = 1, ...)
 }
@@ -14,12 +14,22 @@
 
 \item{type}{The type of graphic to be generated, matching either "R" or
 "lamdbas"; "R" will plot the likelihood of R values; "lambdas" will plot
-the force of infection over time.}
+the force of infection over time; see `scale` argument to interprete the
+force of infection.}
 
-\item{scale}{A numeric value indicating the scaling factor for lambdas on the
-'y' axis.}
+\item{scale}{A numeric value indicating the total number of new cases
+expected over the time period of the lambdas, or a recognised `character`
+string; lambdas will be scaled to correspond to the number of expected
+cases every day; defaults to `ml`, which tells function to use the maximum
+likelihood estimate of *R* multiplied by the number of infectious cases}
 
-\item{...}{Further arguments to be passed to other methods (not used).
+\item{...}{Further arguments to be passed to other methods; for the plot of
+*R*, `...` is passed to `ggplot2::geom_line()`; for the plot of *lambdas*,
+`...` is passed to `ggplot2::geom_bar()`.}
+}
+\value{
+A `ggplot2` object.
+
 
 if (require(incidence)) {
 
@@ -32,10 +42,8 @@ res <- get_R(x, disease = "ebola")
 res
 plot(res)
 plot(res, "lambdas")
-plot(res, "lambdas", scaling = 5)
-points(onset, 1:4, cex = 3, pch = 20)
 
-}}
+}
 }
 \description{
 These functions are designed for plotting \code{earlyR} objects, output by

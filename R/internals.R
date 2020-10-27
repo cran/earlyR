@@ -50,3 +50,15 @@
 ##   rowSums(all_lambdas)
 ## }
 
+
+
+
+## This function converts log-likelihood values back to their original
+## scales. It also aims to sanitize very low log-likelihood values which will
+## cause numerical approximation problems when converted to the original scale.
+
+loglike_to_density <- function(x) {
+  out <- exp(x)
+  out <- out / sum(out, na.rm = TRUE)
+  out
+}
